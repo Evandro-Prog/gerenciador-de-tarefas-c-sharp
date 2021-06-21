@@ -19,12 +19,11 @@ namespace GerenciadorDeTarefas.Controllers
     public class LoginController : BaseController
     {
         private readonly ILogger<LoginController> _logger;
-        private readonly IUsuarioRepository _usuarioRepository;       
 
-        public LoginController(ILogger<LoginController> logger, IUsuarioRepository usuarioRepository)
+        public LoginController(ILogger<LoginController> logger,
+            IUsuarioRepository usuarioRepository) : base(usuarioRepository)
         {
             _logger = logger;
-            _usuarioRepository = usuarioRepository;
         }
 
         [HttpPost]
@@ -33,7 +32,7 @@ namespace GerenciadorDeTarefas.Controllers
         {
             try
             {
-                if(requisicao == null
+                if (requisicao == null
                     || string.IsNullOrEmpty(requisicao.Login) || string.IsNullOrWhiteSpace(requisicao.Login)
                     || string.IsNullOrEmpty(requisicao.Senha) || string.IsNullOrWhiteSpace(requisicao.Senha))
                 {
@@ -45,8 +44,7 @@ namespace GerenciadorDeTarefas.Controllers
                 }
 
                 var usuario = _usuarioRepository.GetUsuarioByLoginSenha(requisicao.Login, MD5Utils.GerarHashMD5(requisicao.Senha));
-
-                if(usuario == null)
+                if (usuario == null)
                 {
                     return BadRequest(new ErroRespostaDto()
                     {
@@ -55,22 +53,22 @@ namespace GerenciadorDeTarefas.Controllers
                     });
                 }
 
-
                 var token = TokenService.CriarToken(usuario);
 
-                return Ok(new LoginRespostaDto() { 
+                return Ok(new LoginRespostaDto()
+                {
                     Email = usuario.Email,
                     Nome = usuario.Nome,
                     Token = token
                 });
-
             }
-            catch(Exception excecao)
+            catch (Exception excecao)
             {
-                _logger.LogError("Ocorreu erro ao efetuar login", excecao, requisicao);
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErroRespostaDto(){
+                _logger.LogError($"Ocorreu erro ao efetuar login: {excecao.Message}", excecao);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErroRespostaDto()
+                {
                     Status = StatusCodes.Status500InternalServerError,
-                    Erro = "Ocorreu erro ao efetuar login, tente novamente!"                    
+                    Erro = "Ocorreu erro ao efetuar login, tente novamente!"
                 });
             }
         }

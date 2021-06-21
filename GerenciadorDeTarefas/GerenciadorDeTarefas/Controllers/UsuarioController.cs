@@ -19,14 +19,12 @@ namespace GerenciadorDeTarefas.Controllers
     public class UsuarioController : BaseController
     {
         private readonly ILogger<UsuarioController> _logger;
-        private readonly IUsuarioRepository _usuarioRepository;
 
        public UsuarioController(ILogger<UsuarioController> logger,
-            IUsuarioRepository usuarioRepository)
+            IUsuarioRepository usuarioRepository) : base(usuarioRepository)
         {
             _logger = logger;
-            _usuarioRepository = usuarioRepository;
-        }
+            }
 
         [HttpPost]
         [AllowAnonymous]
