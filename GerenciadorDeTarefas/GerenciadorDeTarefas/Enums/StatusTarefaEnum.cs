@@ -7,8 +7,8 @@ namespace GerenciadorDeTarefas.Enums
 {
     public enum StatusTarefaEnum : int 
     {
-        Todos = 0,
-        Ativos = 1,
-        Concluidos = 2
+        Todas = 0,
+        Ativas = 1,
+        Concluídas = 2
     }
 }

@@ -34,8 +34,8 @@ namespace GerenciadorDeTarefas.Repository.Impl
             return _contexto.Tarefa.Where(tarefa => tarefa.IdUsuario == idUsuario
                                && (periodoDe == null || periodoDe == DateTime.MinValue || tarefa.DataPrevistaConclusao >= ((DateTime)periodoDe).Date)
                                && (periodoAte == null || periodoAte == DateTime.MinValue || tarefa.DataPrevistaConclusao <= ((DateTime)periodoAte).Date)
-                               && (status == StatusTarefaEnum.Todos || status == StatusTarefaEnum.Ativos && tarefa.DataConclusao == null)
-                                          || (status == StatusTarefaEnum.Concluidos && tarefa.DataConclusao !=null))
+                               && (status == StatusTarefaEnum.Todas || status == StatusTarefaEnum.Ativas && tarefa.DataConclusao == null)
+                                          || (status == StatusTarefaEnum.Concluídas && tarefa.DataConclusao !=null))
                         .ToList();
         }
 
